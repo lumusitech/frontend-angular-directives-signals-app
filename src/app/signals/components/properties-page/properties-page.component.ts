@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, effect, signal } from '@angular/core';
 import { User } from '../../interfaces/user-request.interface';
 
 @Component({
@@ -18,6 +18,12 @@ export class PropertiesPageComponent {
   public fullName = computed(
     () => `${this.user().first_name} ${this.user().last_name}`
   );
+
+  public counter = signal(0);
+
+  public userChangedEffect = effect(() => {
+    console.log(`${this.fullName()} - counter: ${this.counter()}`);
+  });
 
   onFieldUpdated(field: string, value: string) {
     this.user.mutate((current) => {
@@ -39,5 +45,9 @@ export class PropertiesPageComponent {
           break;
       }
     });
+  }
+
+  increaseBy(value: number) {
+    this.counter.update((current) => current + value);
   }
 }
