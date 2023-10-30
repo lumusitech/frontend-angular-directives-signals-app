@@ -1,8 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, WritableSignal, computed, signal } from '@angular/core';
 
 @Component({
   selector: 'signals-counter-page',
   templateUrl: './counter-page.component.html',
   styleUrls: ['./counter-page.component.css'],
 })
-export class CounterPageComponent {}
+export class CounterPageComponent {
+  public counter = signal(10);
+  public square = computed(() => this.counter() * this.counter());
+
+  increaseBy(value: number) {
+    this.counter.update((current) => current + value);
+  }
+}
